@@ -24,11 +24,6 @@ def coverage(ctx):
     ctx.run("coverage run --branch -m pytest src")
 
 
-@task
-def autopep(ctx):
-    ctx.run("autopep8 --in-place --aggressive --aggressive -r .\src\\")
-
-
 @task(coverage)
 def coverage_report(ctx):
     ctx.run("coverage html")
