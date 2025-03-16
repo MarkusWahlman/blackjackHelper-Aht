@@ -12,14 +12,16 @@ class TestChart(unittest.TestCase):
             "404")
 
     def test_finds_right_values_from_chart(self):
-        shouldPlay1 = self.normalChart("3", "2")
-        shouldPlay2 = self.normalChart("1", "2")
-        self.assertEqual(str(shouldPlay1), "D")
-        self.assertEqual(str(shouldPlay2), "S")
+        chartValue1 = self.normalChart("3", "2")
+        chartValue2 = self.normalChart("1", "2")
+        self.assertEqual(chartValue1, "D")
+        self.assertEqual(chartValue2, "S")
 
     def test_returns_set_value_if_not_found(self):
-        shouldPlay = self.normalChart("10", "10")
-        self.assertEqual(str(shouldPlay), "404")
+        chartValue = self.normalChart("10", "10")
+        self.assertEqual(chartValue, "404")
 
-    # softChart = Chart(oneDeckSoftChart)
-    # splitChart = Chart(oneDeckSplitChart)
+    def test_can_set_return_value(self):
+        self.normalChart.set_on_not_found("not_found")
+        chartValue = self.normalChart("10", "10")
+        self.assertEqual(chartValue, "not_found")
