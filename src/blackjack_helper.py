@@ -60,7 +60,7 @@ class BlackJackHelper:
                         f"Invalid value: {value} in {outer_key} -> {inner_key}")
 
         return True
-    
+
     def set_rule(self, rule_name: BlackjackRules, value: bool):
         if rule_name not in BlackjackRules:
             raise ValueError(f"Unknown rule: {rule_name}")
@@ -82,7 +82,7 @@ class BlackJackHelper:
             return allowed_action if self.rules[rule] else fallback_action
 
         return action
-    
+
     def _is_pair(self, player_cards: list[str]) -> bool:
         return len(player_cards) == 2 and player_cards[0] == player_cards[1]
 
@@ -107,14 +107,13 @@ class BlackJackHelper:
                 total_value += 1
 
         return self.normal_chart, total_value
-    
+
     def ask_help(self, dealer_card: str, player_cards: list[str]):
         if len(player_cards) < 2:
             return BlackjackActions.HIT
 
-        correct_chart, search_from_chart = self._determine_chart_and_value_to_search(player_cards)
-        
+        correct_chart, search_from_chart = self._determine_chart_and_value_to_search(
+            player_cards)
+
         action = correct_chart(dealer_card, str(search_from_chart))
         return self._get_correct_action_from_rules(action)
-
-        

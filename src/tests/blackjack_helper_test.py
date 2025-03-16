@@ -112,7 +112,7 @@ class TestBlackjackHelperAskHelpCharts(unittest.TestCase):
 class TestBlackjackHelperRules(unittest.TestCase):
     def setUp(self):
         normal_chart = Chart({
-            "2": {"5": BlackjackActions.DOUBLE_HIT, "6": BlackjackActions.DOUBLE_STAND, "7": BlackjackActions.SPLIT_HIT,},
+            "2": {"5": BlackjackActions.DOUBLE_HIT, "6": BlackjackActions.DOUBLE_STAND, "7": BlackjackActions.SPLIT_HIT, },
             "3": {"5": BlackjackActions.SPLIT_DOUBLE, "6": BlackjackActions.SURRENDER_HIT, "7": BlackjackActions.SURRENDER_STAND, },
         })
 
@@ -135,14 +135,16 @@ class TestBlackjackHelperRules(unittest.TestCase):
         self.assertEqual(blackjack_action, BlackjackActions.DOUBLE)
 
     def test_double_after_split_allowed_rule_true_has_effect(self):
-        self.blackjack_helper.set_rule(BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED, False)
+        self.blackjack_helper.set_rule(
+            BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED, False)
         blackjack_action = self.blackjack_helper.ask_help("2", ["3", "4"])
         self.assertEqual(blackjack_action, BlackjackActions.HIT)
         blackjack_action = self.blackjack_helper.ask_help("3", ["3", "2"])
         self.assertEqual(blackjack_action, BlackjackActions.DOUBLE)
 
     def test_double_after_split_allowed_rule_false_has_effect(self):
-        self.blackjack_helper.set_rule(BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED, True)
+        self.blackjack_helper.set_rule(
+            BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED, True)
         blackjack_action = self.blackjack_helper.ask_help("2", ["3", "4"])
         self.assertEqual(blackjack_action, BlackjackActions.SPLIT)
         blackjack_action = self.blackjack_helper.ask_help("3", ["3", "2"])
