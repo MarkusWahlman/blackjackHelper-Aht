@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 from chart import Chart
-from blackjack_helper import BlackJackHelper, BlackjackActions
+from blackjack_helper import BlackJackHelper, BlackjackActions, BlackjackRules
 
 
 class TestVerifyBlackjackChart(unittest.TestCase):
@@ -31,8 +31,8 @@ class TestVerifyBlackjackChart(unittest.TestCase):
         })
 
     def test_normal_chart_returns_true(self):
-        self.assertEqual(BlackJackHelper.verify_blackjack_chart(
-            self.valid_chart), True)
+        self.assertTrue(BlackJackHelper.verify_blackjack_chart(
+            self.valid_chart))
 
     def test_invalid_outer_key_raises_exception(self):
         with self.assertRaisesRegex(ValueError, "Invalid outer key: B"):
@@ -50,21 +50,21 @@ class TestVerifyBlackjackChart(unittest.TestCase):
                 self.invalid_action_value_chart)
 
 
-class TestBlackjackHelper(unittest.TestCase):
+class TestBlackjackHelperAskHelpCharts(unittest.TestCase):
     def setUp(self):
-        normalChart = Chart({
+        normal_chart = Chart({
             "1": {"5": "1-5-NORMAL", "6": "1-6-NORMAL", "7": "1-7-NORMAL", "8": "1-8-NORMAL", "9": "1-9-NORMAL", "10": "1-10-NORMAL", "11": "1-11-NORMAL", "12": "1-12-NORMAL"},
             "2": {"5": "2-5-NORMAL", "6": "2-6-NORMAL", "7": "2-7-NORMAL", "8": "2-8-NORMAL", "9": "2-9-NORMAL", "10": "2-10-NORMAL", "11": "2-11-NORMAL", "12": "2-12-NORMAL"},
             "3": {"5": "3-5-NORMAL", "6": "3-6-NORMAL", "7": "3-7-NORMAL", "8": "3-8-NORMAL", "9": "3-9-NORMAL", "10": "3-10-NORMAL", "11": "3-11-NORMAL", "12": "3-12-NORMAL"},
         })
 
-        softChart = Chart({
+        soft_chart = Chart({
             "1": {"13": "1-13-SOFT", "14": "1-14-SOFT", "15": "1-15-SOFT"},
             "2": {"13": "2-13-SOFT", "14": "2-14-SOFT", "15": "2-15-SOFT"},
             "3": {"13": "2-13-SOFT", "14": "2-14-SOFT", "15": "2-15-SOFT"},
         })
 
-        splitChart = Chart({
+        split_chart = Chart({
             "1": {"1": "1-1-SPLIT", "2": "2-2-SPLIT", "3": "2-3-SPLIT"},
             "2": {"1": "2-1-SPLIT", "2": "2-2-SPLIT", "3": "2-3-SPLIT"},
             "3": {"1": "3-1-SPLIT", "2": "3-2-SPLIT", "3": "3-3-SPLIT"},
@@ -73,31 +73,91 @@ class TestBlackjackHelper(unittest.TestCase):
         BlackJackHelper.verify_blackjack_chart = Mock(return_value=True)
 
         self.blackjackHelper = BlackJackHelper(
-            normalChart, softChart, splitChart
+            normal_chart, soft_chart, split_chart
         )
 
     def test_uses_normal_chart_on_normal_hand(self):
-        chartValue = self.blackjackHelper.ask_help("2", ["2", "3"])
-        self.assertEqual(chartValue, "2-5-NORMAL")
+        chart_value = self.blackjackHelper.ask_help("2", ["2", "3"])
+        self.assertEqual(chart_value, "2-5-NORMAL")
 
     def test_uses_split_chart_on_pair(self):
-        chartValue = self.blackjackHelper.ask_help("1", ["2", "2"])
-        self.assertEqual(chartValue, "2-2-SPLIT")
+        chart_value = self.blackjackHelper.ask_help("1", ["2", "2"])
+        self.assertEqual(chart_value, "2-2-SPLIT")
 
     def test_uses_soft_chart_on_soft(self):
-        chartValue1 = self.blackjackHelper.ask_help("2", ["1", "3"])
-        chartValue2 = self.blackjackHelper.ask_help("2", ["3", "1"])
-        self.assertEqual(chartValue1, "2-14-SOFT")
-        self.assertEqual(chartValue2, "2-14-SOFT")
+        chart_value1 = self.blackjackHelper.ask_help("2", ["1", "3"])
+        chart_value2 = self.blackjackHelper.ask_help("2", ["3", "1"])
+        self.assertEqual(chart_value1, "2-14-SOFT")
+        self.assertEqual(chart_value2, "2-14-SOFT")
 
     def test_uses_soft_chart_on_multi_card_soft(self):
-        chartValue = self.blackjackHelper.ask_help("2", ["1", "1", "3"])
-        self.assertEqual(chartValue, "2-15-SOFT")
+        chart_value = self.blackjackHelper.ask_help("2", ["1", "1", "3"])
+        self.assertEqual(chart_value, "2-15-SOFT")
 
     def test_uses_normal_chart_on_hard_ace(self):
-        chartValue = self.blackjackHelper.ask_help("2", ["1", "4", "7"])
-        self.assertEqual(chartValue, "2-12-NORMAL")
+        chart_value = self.blackjackHelper.ask_help("2", ["1", "4", "7"])
+        self.assertEqual(chart_value, "2-12-NORMAL")
 
     def test_not_found_defaults_to_stand(self):
-        chartValue = self.blackjackHelper.ask_help("50", ["5", "10"])
-        self.assertEqual(chartValue, BlackjackActions.STAND)
+        chart_value = self.blackjackHelper.ask_help("50", ["5", "10"])
+        self.assertEqual(chart_value, BlackjackActions.STAND)
+
+    def test_always_hit_one_card(self):
+        chart_value1 = self.blackjackHelper.ask_help("2", ["5"])
+        chart_value2 = self.blackjackHelper.ask_help("50", ["5"])
+        self.assertEqual(chart_value1, BlackjackActions.HIT)
+        self.assertEqual(chart_value2, BlackjackActions.HIT)
+
+
+class TestBlackjackHelperRules(unittest.TestCase):
+    def setUp(self):
+        normal_chart = Chart({
+            "2": {"5": BlackjackActions.DOUBLE_HIT, "6": BlackjackActions.DOUBLE_STAND, "7": BlackjackActions.SPLIT_HIT,},
+            "3": {"5": BlackjackActions.SPLIT_DOUBLE, "6": BlackjackActions.SURRENDER_HIT, "7": BlackjackActions.SURRENDER_STAND, },
+        })
+
+        self.blackjack_helper = BlackJackHelper(
+            normal_chart, normal_chart, normal_chart
+        )
+
+    def test_double_allowed_rule_true_has_effect(self):
+        self.blackjack_helper.set_rule(BlackjackRules.DOUBLE_ALLOWED, False)
+        blackjack_action = self.blackjack_helper.ask_help("2", ["2", "3"])
+        self.assertEqual(blackjack_action, BlackjackActions.HIT)
+        blackjack_action = self.blackjack_helper.ask_help("2", ["2", "4"])
+        self.assertEqual(blackjack_action, BlackjackActions.STAND)
+
+    def test_double_allowed_rule_false_has_effect(self):
+        self.blackjack_helper.set_rule(BlackjackRules.DOUBLE_ALLOWED, True)
+        blackjack_action = self.blackjack_helper.ask_help("2", ["2", "3"])
+        self.assertEqual(blackjack_action, BlackjackActions.DOUBLE)
+        blackjack_action = self.blackjack_helper.ask_help("2", ["2", "4"])
+        self.assertEqual(blackjack_action, BlackjackActions.DOUBLE)
+
+    def test_double_after_split_allowed_rule_true_has_effect(self):
+        self.blackjack_helper.set_rule(BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED, False)
+        blackjack_action = self.blackjack_helper.ask_help("2", ["3", "4"])
+        self.assertEqual(blackjack_action, BlackjackActions.HIT)
+        blackjack_action = self.blackjack_helper.ask_help("3", ["3", "2"])
+        self.assertEqual(blackjack_action, BlackjackActions.DOUBLE)
+
+    def test_double_after_split_allowed_rule_false_has_effect(self):
+        self.blackjack_helper.set_rule(BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED, True)
+        blackjack_action = self.blackjack_helper.ask_help("2", ["3", "4"])
+        self.assertEqual(blackjack_action, BlackjackActions.SPLIT)
+        blackjack_action = self.blackjack_helper.ask_help("3", ["3", "2"])
+        self.assertEqual(blackjack_action, BlackjackActions.SPLIT)
+
+    def test_surrender_allowed_rule_true_has_effect(self):
+        self.blackjack_helper.set_rule(BlackjackRules.SURRENDER_ALLOWED, True)
+        blackjack_action = self.blackjack_helper.ask_help("3", ["2", "4"])
+        self.assertEqual(blackjack_action, BlackjackActions.SURRENDER)
+        blackjack_action = self.blackjack_helper.ask_help("3", ["3", "4"])
+        self.assertEqual(blackjack_action, BlackjackActions.SURRENDER)
+
+    def test_surrender_allowed_rule_false_has_effect(self):
+        self.blackjack_helper.set_rule(BlackjackRules.SURRENDER_ALLOWED, False)
+        blackjack_action = self.blackjack_helper.ask_help("3", ["2", "4"])
+        self.assertEqual(blackjack_action, BlackjackActions.HIT)
+        blackjack_action = self.blackjack_helper.ask_help("3", ["3", "4"])
+        self.assertEqual(blackjack_action, BlackjackActions.STAND)
