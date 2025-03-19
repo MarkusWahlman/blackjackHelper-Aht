@@ -15,6 +15,7 @@ class BlackjackActions(StrEnum):
     SURRENDER_HIT = 'Rh'
     SURRENDER_STAND = 'Rs'
 
+BLACKJACK_CARDS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
 class BlackjackRules(StrEnum):
     DOUBLE_ALLOWED = 'double_allowed'
@@ -22,7 +23,7 @@ class BlackjackRules(StrEnum):
     SURRENDER_ALLOWED = 'surrender_allowed'
 
 
-class BlackJackHelper:
+class BlackjackHelper:
     def __init__(self, normal_chart: Chart, soft_chart: Chart, split_chart: Chart, rules=None):
         normal_chart.set_on_not_found(BlackjackActions.STAND)
         soft_chart.set_on_not_found(BlackjackActions.STAND)
@@ -100,7 +101,7 @@ class BlackJackHelper:
                 total_value += int(card)
 
         if found_ace:
-            if 11 + total_value < 21:
+            if 11 + total_value <= 21:
                 total_value += 11
                 return self.soft_chart, total_value
             else:
@@ -109,6 +110,9 @@ class BlackJackHelper:
         return self.normal_chart, total_value
 
     def ask_help(self, dealer_card: str, player_cards: list[str]):
+        if dealer_card not in BLACKJACK_CARDS or any(card not in BLACKJACK_CARDS for card in player_cards):
+            return None
+
         if len(player_cards) < 2:
             return BlackjackActions.HIT
 
