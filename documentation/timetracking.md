@@ -4,6 +4,8 @@
 | ----- | ---- | ----------------------------------- |
 | 15.3. | 2    | project setup and chart development |
 | 16.3  | 6    | blackjack helper development        |
+| 18.3  | 2    | changes to blackjack and gui        |
+| 19.3  | 5    | GUI development                     |
 |       |      |                                     |
 |       |      |                                     |
 |       |      |                                     |
@@ -11,6 +13,4 @@
 |       |      |                                     |
 |       |      |                                     |
 |       |      |                                     |
-|       |      |                                     |
-|       |      |                                     |
-| Total | 1    |                                     |
+| Total | 15   |                                     |
