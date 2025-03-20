@@ -1,4 +1,5 @@
-@todo Add sequence diagrams describing essential functionalities
+@todo
+Add sequence diagrams describing essential functionalities
 
 Dokumentti sisältää sovelluksen korkean tason (esim. hakemistojen tasolla) rakenteen kuvauksen, sekä alustavan kuvauksen sovelluslogiikasta
 Dokumentissa voi hyödyntää edellisten viikkojen luokka- ja sekvenssikaavioita

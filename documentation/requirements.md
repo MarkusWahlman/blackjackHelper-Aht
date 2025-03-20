@@ -1,59 +1,45 @@
-Vaatimusmäärittely kannattaa yleensä aloittaa tunnistamalla järjestelmän erityyppiset käyttäjäroolit. Sovelluksellamme ei ole toistaiseksi muuta kuin normaaleja käyttäjiä. Jatkossa sovellukseen saatetaan lisätä myös ylläpitäjän oikeuksilla varustettu käyttäjärooli.
+# Blackjack Helper
 
-Kun sovelluksen käyttäjäroolit ovat selvillä, mietitään mitä toiminnallisuuksia kunkin käyttäjäroolin halutaan pystyvän tekemään sovelluksen avulla.
+## Purpose of the Application
 
-Todo-sovelluksen normaalien käyttäjien toiminnallisuuksia ovat esim. seuraavat
+Blackjack Helper is a tool designed to assist players make optimal decisions based on predefined blackjack strategy charts. Players can configure game settings, such as whether doubling after a split is allowed.
 
-    käyttäjä voi luoda järjestelmään käyttäjätunnuksen
-    käyttäjä voi kirjautua järjestelmään
-    kirjautumisen jälkeen käyttäjä näkee omat tekemättömät työt eli todot
-    käyttäjä voi luoda uuden todon
-    käyttäjä voi merkitä todon tehdyksi, jolloin todo häviää listalta
+## Core Functionality
 
-Ylläpitäjän toiminnallisuuksia voisivat olla esim. seuraavat
+### Before Starting the Game
 
-    ylläpitäjä näkee tilastoja sovelluksen käytöstä
-    ylläpitäjä voi poistaa normaalin käyttäjätunnuksen
+- The user can configure game rules, such as:
+  - Whether doubling is allowed
+  - Whether doubling after a split is allowed
+  - Whether surrender is allowed
 
-Ohjelmiston vaatimuksiin kuuluvat myös toimintaympäristön rajoitteet. Todo-sovellusta koskevat seuraavat rajoitteet
+### During the Game
 
-    ohjelmiston tulee toimia Linux- ja OSX-käyttöjärjestelmillä varustetuissa koneissa
-    käyttäjien ja todojen tiedot talletetaan paikallisen koneen levylle
+- The software reads a predefined blackjack strategy chart
+- Based on the player's hand and dealer's upcard, it suggests the optimal move:
+  - Hit
+  - Stand
+  - Double
+  - Split
+  - Surrender (if applicable)
 
-Vaatimusmäärittelyn aikana hahmotellaan yleensä myös sovelluksen käyttöliittymä.
+### User Interface
 
-Voit myös tehdä referenssiprojektin tapaan käyttöliittymäluonnoksen, se ei ole kuitenkaan pakollinen.
+A simple graphical interface with two separate windows:
 
-ESIM:
-Sovelluksen tarkoitus
-.............
+- Game Window:
+  - Allows users to input their hand and the dealer's upcard and view recommended moves.
+- Settings Window:
+  - Enables users to adjust game settings.
 
-Perusversion tarjoama toiminnallisuus
-Ennen kirjautumista
+## Future Enhancements
 
-    Käyttäjä voi luoda järjestelmään käyttäjätunnuksen
-        Käyttäjätunnuksen täytyy olla uniikki ja pituudeltaan vähintään 3 merkkiä
-    Käyttäjä voi kirjautua järjestelmään
-        Kirjautuminen onnistuu syötettäessä olemassaoleva käyttäjätunnus ja salasana kirjautumislomakkeelle
-        Jos käyttäjää ei olemassa, tai salasana ei täsmää, ilmoittaa järjestelmä tästä
+Possible improvements for future versions include:
 
-Kirjautumisen jälkeen
-
-    Käyttäjä näkee omat tekemättömät työt eli todot
-    Käyttäjä voi luoda uuden todon
-        Luotu todo näkyy ainoastaan sen luoneelle käyttäjälle
-    Käyttäjä voi merkitä todon tehdyksi, jolloin todo häviää listalta
-    Käyttäjä voi kirjautua ulos järjestelmästä
-
-Jatkokehitysideoita
-Perusversion jälkeen järjestelmää täydennetään ajan salliessa esim. seuraavilla toiminnallisuuksilla:
-
-    Tehdyksi merkittyjen todojen tarkastelu
-    Tehdyksi merkittyjen todojen merkkaaminen tekemättömiksi
-    Todon tietojen editointi
-    Todojen järjestely tärkeysjärjestykseen
-    Todojen määrittely muille käyttäjille
-    Käyttäjätiimit, jotka näkevät kaikki yhteiset todot
-    Mahdollisuus useampaan erilliseen todo-listaan
-    Lisätään todoon kenttä, johon on mahdollista merkitä tarkempia todoon liittyviä tietoja
-    Käyttäjätunnuksen (ja siihen liittyvien todojen) poisto
+- Keeping track of session statistics:
+  - Number of hands played
+  - Wins, losses, and pushes
+  - Overall win rate
+- Saving table settings locally
+- Online storage for tracking blackjack game history
+- Allowing users to upload and use their own charts
