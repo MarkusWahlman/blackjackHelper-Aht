@@ -43,3 +43,4 @@ Possible improvements for future versions include:
 - Saving table settings locally
 - Online storage for tracking blackjack game history
 - Allowing users to upload and use their own charts
+- Card detection for online blackjack using YOLO
