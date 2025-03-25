@@ -1,4 +1,4 @@
-# Työaikakirjanpito
+# Time Tracking
 
 | Date      | Time | What was done                                        |
 | --------- | ---- | ---------------------------------------------------- |
