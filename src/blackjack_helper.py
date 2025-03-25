@@ -15,7 +15,9 @@ class BlackjackActions(StrEnum):
     SURRENDER_HIT = 'Rh'
     SURRENDER_STAND = 'Rs'
 
+
 BLACKJACK_CARDS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+
 
 class BlackjackRules(StrEnum):
     DOUBLE_ALLOWED = 'double_allowed'
