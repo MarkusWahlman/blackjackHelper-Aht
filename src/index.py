@@ -2,8 +2,8 @@ from blackjack_interface import BlackjackInterface
 
 
 def main():
-    blackjackInterface = BlackjackInterface()
-    blackjackInterface.start()
+    blackjack_interface = BlackjackInterface()
+    blackjack_interface.start()
 
 
 if __name__ == "__main__":
