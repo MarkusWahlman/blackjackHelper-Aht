@@ -124,6 +124,10 @@ class TestBlackjackHelperRules(unittest.TestCase):
         return_value = self.blackjack_helper.ask_help(None, ["2", "3"])
         self.assertEqual(return_value, None)
 
+    def test_invalid_rule_raises_error(self):
+        with self.assertRaisesRegex(ValueError, "Unknown rule: TEST"):
+            self.blackjack_helper.set_rule("TEST", False)
+
     def test_double_allowed_rule_true_has_effect(self):
         self.blackjack_helper.set_rule(BlackjackRules.DOUBLE_ALLOWED, False)
         blackjack_action = self.blackjack_helper.ask_help("2", ["2", "3"])
