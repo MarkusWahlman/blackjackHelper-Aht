@@ -14,7 +14,17 @@ class BlackjackActions(StrEnum):
     SURRENDER = 'R'
     SURRENDER_HIT = 'Rh'
     SURRENDER_STAND = 'Rs'
+    
+BLACKJACK_ACTION_NAMES = {
+    BlackjackActions.HIT: "Hit",
+    BlackjackActions.STAND: "Stand",
+    BlackjackActions.DOUBLE: "Double",
+    BlackjackActions.SPLIT: "Split",
+    BlackjackActions.SURRENDER: "Surrender",
+}
 
+def get_blackjack_action_name(action: BlackjackActions) -> str:
+    return BLACKJACK_ACTION_NAMES.get(action, "Unknown")
 
 BLACKJACK_CARDS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
@@ -128,4 +138,4 @@ class BlackjackHelper:
             player_cards)
 
         action = correct_chart(dealer_card, str(search_from_chart))
-        return self._get_correct_action_from_rules(action)
+        return get_blackjack_action_name(self._get_correct_action_from_rules(action))

@@ -2,7 +2,7 @@ import json
 import math
 import dearpygui.dearpygui as dpg
 
-from blackjack_helper import BLACKJACK_CARDS, BlackjackHelper, BlackjackRules
+from blackjack_helper import BLACKJACK_CARDS, BlackjackHelper, BlackjackRules, get_blackjack_action_name
 from chart import Chart
 
 
