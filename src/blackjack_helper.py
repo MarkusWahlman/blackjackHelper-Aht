@@ -70,6 +70,12 @@ class BlackjackHelper:
 
         self.rules[rule_name] = value
 
+    def get_rule(self, rule_name: BlackjackRules):
+        if rule_name not in BlackjackRules:
+            raise ValueError(f"Unknown rule: {rule_name}")
+
+        return self.rules[rule_name]
+
     def _get_correct_action_from_rules(self, action: BlackjackActions):
         rules_map = {
             BlackjackActions.DOUBLE_HIT: (BlackjackRules.DOUBLE_ALLOWED, BlackjackActions.DOUBLE, BlackjackActions.HIT),

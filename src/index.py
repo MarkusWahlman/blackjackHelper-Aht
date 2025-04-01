@@ -1,4 +1,4 @@
-from blackjack_interface import BlackjackInterface
+from ui.blackjack_interface import BlackjackInterface
 
 
 def main():

@@ -2,7 +2,7 @@ import json
 import math
 import dearpygui.dearpygui as dpg
 
-from blackjack_helper import BLACKJACK_CARDS, BlackjackHelper
+from blackjack_helper import BLACKJACK_CARDS, BlackjackHelper, BlackjackRules
 from chart import Chart
 
 
@@ -59,23 +59,25 @@ class BlackjackInterface:
             user_data=user_data,
             show=show_condition
         )
-
         # dpg.add_image(self.texture_tag)
 
         return card_listbox
+    
+    def _change_rule(self, _, app_data, user_data):
+        self.blackjack_helper.set_rule(user_data, app_data)
+        self._update_help_text()
+        self._update_card_listboxes()
 
-    def setup_ui(self):
-        # width, height, _, data = dpg.load_image("data/images/1.png")
+    def _show_settings(self):
+        dpg.configure_item(self.settings_window, show=True)
 
-        # with dpg.texture_registry():
-        #    self.texture_tag = dpg.add_static_texture(width=width, height=height, default_value=data)
-
-        dpg.create_viewport(title='Blackjack Helper', width=600, height=500)
-
+    def _setup_primary_window(self):
         with dpg.window() as blackjack_window:
+            dpg.add_button(label="Settings", callback=self._show_settings)
+
             self.dealer_card_listbox = self._add_card_listbox(
                 self._update_dealer_card)
-
+            
             total_rows = math.ceil(self.max_player_cards / self.cards_per_row)
             for row in range(total_rows):
                 with dpg.group(horizontal=True):
@@ -95,6 +97,35 @@ class BlackjackInterface:
                 self.blackjack_helper.ask_help(self.dealer_card, self.player_cards))
 
         dpg.set_primary_window(blackjack_window, True)
+        self.blackjack_window = blackjack_window
+
+    def _setup_settings_window(self):
+        with dpg.window() as settings_window:
+            dpg.add_checkbox(label="Double allowed", 
+                             default_value=self.blackjack_helper.get_rule(BlackjackRules.DOUBLE_ALLOWED), 
+                             callback=self._change_rule, user_data=BlackjackRules.DOUBLE_ALLOWED)
+            
+            dpg.add_checkbox(label="Double after split allowed", 
+                             default_value=self.blackjack_helper.get_rule(BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED), 
+                             callback=self._change_rule, user_data=BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED)
+            
+            dpg.add_checkbox(label="Surrender allowed", 
+                             default_value=self.blackjack_helper.get_rule(BlackjackRules.SURRENDER_ALLOWED), 
+                             callback=self._change_rule, user_data=BlackjackRules.SURRENDER_ALLOWED)
+        
+        self.settings_window = settings_window
+        
+
+    def setup_ui(self):
+        # width, height, _, data = dpg.load_image("data/images/1.png")
+
+        # with dpg.texture_registry():
+        #    self.texture_tag = dpg.add_static_texture(width=width, height=height, default_value=data)
+
+        dpg.create_viewport(title='Blackjack Helper', width=600, height=500)
+
+        self._setup_settings_window()
+        self._setup_primary_window()
 
     def __init__(self):
         self.max_player_cards = 5
