@@ -127,7 +127,7 @@ class BlackjackHelper:
 
         return self.normal_chart, total_value
 
-    def ask_help(self, dealer_card: str, player_cards: list[str]):
+    def _get_correct_action(self, dealer_card: str, player_cards: list[str]):
         if dealer_card not in BLACKJACK_CARDS or any(card not in BLACKJACK_CARDS for card in player_cards):
             return None
 
@@ -138,4 +138,8 @@ class BlackjackHelper:
             player_cards)
 
         action = correct_chart(dealer_card, str(search_from_chart))
-        return get_blackjack_action_name(self._get_correct_action_from_rules(action))
+        return self._get_correct_action_from_rules(action)
+    
+    def ask_help(self, dealer_card: str, player_cards: list[str]):
+        return get_blackjack_action_name(self._get_correct_action(dealer_card, player_cards))
+

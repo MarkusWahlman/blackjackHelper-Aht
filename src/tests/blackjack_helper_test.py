@@ -77,34 +77,34 @@ class TestBlackjackHelperAskHelpCharts(unittest.TestCase):
         )
 
     def test_uses_normal_chart_on_normal_hand(self):
-        chart_value = self.blackjack_helper.ask_help("2", ["2", "3"])
+        chart_value = self.blackjack_helper._get_correct_action("2", ["2", "3"])
         self.assertEqual(chart_value, "2-5-NORMAL")
 
     def test_uses_split_chart_on_pair(self):
-        chart_value = self.blackjack_helper.ask_help("1", ["2", "2"])
+        chart_value = self.blackjack_helper._get_correct_action("1", ["2", "2"])
         self.assertEqual(chart_value, "2-2-SPLIT")
 
     def test_uses_soft_chart_on_soft(self):
-        chart_value1 = self.blackjack_helper.ask_help("2", ["1", "3"])
-        chart_value2 = self.blackjack_helper.ask_help("2", ["3", "1"])
+        chart_value1 = self.blackjack_helper._get_correct_action("2", ["1", "3"])
+        chart_value2 = self.blackjack_helper._get_correct_action("2", ["3", "1"])
         self.assertEqual(chart_value1, "2-14-SOFT")
         self.assertEqual(chart_value2, "2-14-SOFT")
 
     def test_uses_soft_chart_on_multi_card_soft(self):
-        chart_value = self.blackjack_helper.ask_help("2", ["1", "1", "3"])
+        chart_value = self.blackjack_helper._get_correct_action("2", ["1", "1", "3"])
         self.assertEqual(chart_value, "2-15-SOFT")
 
     def test_uses_normal_chart_on_hard_ace(self):
-        chart_value = self.blackjack_helper.ask_help("2", ["1", "4", "7"])
+        chart_value = self.blackjack_helper._get_correct_action("2", ["1", "4", "7"])
         self.assertEqual(chart_value, "2-12-NORMAL")
 
     def test_not_found_defaults_to_stand(self):
-        chart_value = self.blackjack_helper.ask_help("10", ["5", "10"])
+        chart_value = self.blackjack_helper._get_correct_action("10", ["5", "10"])
         self.assertEqual(chart_value, BlackjackActions.STAND)
 
     def test_always_hit_one_card(self):
-        chart_value1 = self.blackjack_helper.ask_help("2", ["5"])
-        chart_value2 = self.blackjack_helper.ask_help("10", ["5"])
+        chart_value1 = self.blackjack_helper._get_correct_action("2", ["5"])
+        chart_value2 = self.blackjack_helper._get_correct_action("10", ["5"])
         self.assertEqual(chart_value1, BlackjackActions.HIT)
         self.assertEqual(chart_value2, BlackjackActions.HIT)
 
@@ -121,7 +121,7 @@ class TestBlackjackHelperRules(unittest.TestCase):
         )
 
     def test_returns_none_for_invalid_dealer_hand(self):
-        return_value = self.blackjack_helper.ask_help(None, ["2", "3"])
+        return_value = self.blackjack_helper._get_correct_action(None, ["2", "3"])
         self.assertEqual(return_value, None)
 
     def test_invalid_rule_raises_error(self):
@@ -130,44 +130,44 @@ class TestBlackjackHelperRules(unittest.TestCase):
 
     def test_double_allowed_rule_true_has_effect(self):
         self.blackjack_helper.set_rule(BlackjackRules.DOUBLE_ALLOWED, False)
-        blackjack_action = self.blackjack_helper.ask_help("2", ["2", "3"])
+        blackjack_action = self.blackjack_helper._get_correct_action("2", ["2", "3"])
         self.assertEqual(blackjack_action, BlackjackActions.HIT)
-        blackjack_action = self.blackjack_helper.ask_help("2", ["2", "4"])
+        blackjack_action = self.blackjack_helper._get_correct_action("2", ["2", "4"])
         self.assertEqual(blackjack_action, BlackjackActions.STAND)
 
     def test_double_allowed_rule_false_has_effect(self):
         self.blackjack_helper.set_rule(BlackjackRules.DOUBLE_ALLOWED, True)
-        blackjack_action = self.blackjack_helper.ask_help("2", ["2", "3"])
+        blackjack_action = self.blackjack_helper._get_correct_action("2", ["2", "3"])
         self.assertEqual(blackjack_action, BlackjackActions.DOUBLE)
-        blackjack_action = self.blackjack_helper.ask_help("2", ["2", "4"])
+        blackjack_action = self.blackjack_helper._get_correct_action("2", ["2", "4"])
         self.assertEqual(blackjack_action, BlackjackActions.DOUBLE)
 
     def test_double_after_split_allowed_rule_true_has_effect(self):
         self.blackjack_helper.set_rule(
             BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED, False)
-        blackjack_action = self.blackjack_helper.ask_help("2", ["3", "4"])
+        blackjack_action = self.blackjack_helper._get_correct_action("2", ["3", "4"])
         self.assertEqual(blackjack_action, BlackjackActions.HIT)
-        blackjack_action = self.blackjack_helper.ask_help("3", ["3", "2"])
+        blackjack_action = self.blackjack_helper._get_correct_action("3", ["3", "2"])
         self.assertEqual(blackjack_action, BlackjackActions.DOUBLE)
 
     def test_double_after_split_allowed_rule_false_has_effect(self):
         self.blackjack_helper.set_rule(
             BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED, True)
-        blackjack_action = self.blackjack_helper.ask_help("2", ["3", "4"])
+        blackjack_action = self.blackjack_helper._get_correct_action("2", ["3", "4"])
         self.assertEqual(blackjack_action, BlackjackActions.SPLIT)
-        blackjack_action = self.blackjack_helper.ask_help("3", ["3", "2"])
+        blackjack_action = self.blackjack_helper._get_correct_action("3", ["3", "2"])
         self.assertEqual(blackjack_action, BlackjackActions.SPLIT)
 
     def test_surrender_allowed_rule_true_has_effect(self):
         self.blackjack_helper.set_rule(BlackjackRules.SURRENDER_ALLOWED, True)
-        blackjack_action = self.blackjack_helper.ask_help("3", ["2", "4"])
+        blackjack_action = self.blackjack_helper._get_correct_action("3", ["2", "4"])
         self.assertEqual(blackjack_action, BlackjackActions.SURRENDER)
-        blackjack_action = self.blackjack_helper.ask_help("3", ["3", "4"])
+        blackjack_action = self.blackjack_helper._get_correct_action("3", ["3", "4"])
         self.assertEqual(blackjack_action, BlackjackActions.SURRENDER)
 
     def test_surrender_allowed_rule_false_has_effect(self):
         self.blackjack_helper.set_rule(BlackjackRules.SURRENDER_ALLOWED, False)
-        blackjack_action = self.blackjack_helper.ask_help("3", ["2", "4"])
+        blackjack_action = self.blackjack_helper._get_correct_action("3", ["2", "4"])
         self.assertEqual(blackjack_action, BlackjackActions.HIT)
-        blackjack_action = self.blackjack_helper.ask_help("3", ["3", "4"])
+        blackjack_action = self.blackjack_helper._get_correct_action("3", ["3", "4"])
         self.assertEqual(blackjack_action, BlackjackActions.STAND)
