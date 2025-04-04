@@ -14,7 +14,8 @@ class BlackjackActions(StrEnum):
     SURRENDER = 'R'
     SURRENDER_HIT = 'Rh'
     SURRENDER_STAND = 'Rs'
-    
+
+
 BLACKJACK_ACTION_NAMES = {
     BlackjackActions.HIT: "Hit",
     BlackjackActions.STAND: "Stand",
@@ -23,8 +24,10 @@ BLACKJACK_ACTION_NAMES = {
     BlackjackActions.SURRENDER: "Surrender",
 }
 
+
 def get_blackjack_action_name(action: BlackjackActions) -> str:
     return BLACKJACK_ACTION_NAMES.get(action, "Unknown")
+
 
 BLACKJACK_CARDS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
@@ -88,12 +91,18 @@ class BlackjackHelper:
 
     def _get_correct_action_from_rules(self, action: BlackjackActions):
         rules_map = {
-            BlackjackActions.DOUBLE_HIT: (BlackjackRules.DOUBLE_ALLOWED, BlackjackActions.DOUBLE, BlackjackActions.HIT),
-            BlackjackActions.DOUBLE_STAND: (BlackjackRules.DOUBLE_ALLOWED, BlackjackActions.DOUBLE, BlackjackActions.STAND),
-            BlackjackActions.SPLIT_DOUBLE: (BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED, BlackjackActions.SPLIT, BlackjackActions.DOUBLE),
-            BlackjackActions.SPLIT_HIT: (BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED, BlackjackActions.SPLIT, BlackjackActions.HIT),
-            BlackjackActions.SURRENDER_HIT: (BlackjackRules.SURRENDER_ALLOWED, BlackjackActions.SURRENDER, BlackjackActions.HIT),
-            BlackjackActions.SURRENDER_STAND: (BlackjackRules.SURRENDER_ALLOWED, BlackjackActions.SURRENDER, BlackjackActions.STAND),
+            BlackjackActions.DOUBLE_HIT: (BlackjackRules.DOUBLE_ALLOWED,
+                                          BlackjackActions.DOUBLE, BlackjackActions.HIT),
+            BlackjackActions.DOUBLE_STAND: (BlackjackRules.DOUBLE_ALLOWED,
+                                            BlackjackActions.DOUBLE, BlackjackActions.STAND),
+            BlackjackActions.SPLIT_DOUBLE: (BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED,
+                                            BlackjackActions.SPLIT, BlackjackActions.DOUBLE),
+            BlackjackActions.SPLIT_HIT: (BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED,
+                                         BlackjackActions.SPLIT, BlackjackActions.HIT),
+            BlackjackActions.SURRENDER_HIT: (BlackjackRules.SURRENDER_ALLOWED,
+                                             BlackjackActions.SURRENDER, BlackjackActions.HIT),
+            BlackjackActions.SURRENDER_STAND: (BlackjackRules.SURRENDER_ALLOWED,
+                                               BlackjackActions.SURRENDER, BlackjackActions.STAND),
         }
 
         if action in rules_map:
@@ -122,13 +131,15 @@ class BlackjackHelper:
             if 11 + total_value <= 21:
                 total_value += 11
                 return self.soft_chart, total_value
-            else:
-                total_value += 1
+            total_value += 1
 
         return self.normal_chart, total_value
 
     def _get_correct_action(self, dealer_card: str, player_cards: list[str]):
-        if dealer_card not in BLACKJACK_CARDS or any(card not in BLACKJACK_CARDS for card in player_cards):
+        if (
+            dealer_card not in BLACKJACK_CARDS
+            or any(card not in BLACKJACK_CARDS for card in player_cards)
+        ):
             return None
 
         if len(player_cards) < 2:
@@ -139,7 +150,6 @@ class BlackjackHelper:
 
         action = correct_chart(dealer_card, str(search_from_chart))
         return self._get_correct_action_from_rules(action)
-    
+
     def ask_help(self, dealer_card: str, player_cards: list[str]):
         return get_blackjack_action_name(self._get_correct_action(dealer_card, player_cards))
-

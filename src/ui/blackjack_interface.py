@@ -11,7 +11,8 @@ class BlackjackInterface:
 
     def _update_dealer_card(self, _, app_data):
         self.dealer_card = app_data
-        dpg.configure_item(self.dealer_card_image, texture_tag=self.card_textures.get(app_data, ""))
+        dpg.configure_item(self.dealer_card_image,
+                           texture_tag=self.card_textures.get(app_data, ""))
         self._update_help_text()
 
     def _update_player_cards(self, _, app_data, card_index):
@@ -19,7 +20,8 @@ class BlackjackInterface:
             raise IndexError("Invalid card index")
         else:
             self.player_cards[card_index] = app_data
-            dpg.configure_item(self.player_cards_images[card_index], texture_tag=self.card_textures.get(self.player_cards[card_index], ""))
+            dpg.configure_item(self.player_cards_images[card_index], texture_tag=self.card_textures.get(
+                self.player_cards[card_index], ""))
         self._update_help_text()
 
     def _add_player_card(self):
@@ -35,18 +37,23 @@ class BlackjackInterface:
 
     def _update_card_listboxes(self):
         dpg.set_value(self.dealer_card_listbox, self.dealer_card)
-        
+
         for card_index in range(self.max_player_cards):
             should_show = card_index < min(
                 len(self.player_cards), self.max_player_cards)
-            
-            dpg.configure_item(self.player_cards_listboxes[card_index], show=should_show)
-            dpg.configure_item(self.player_cards_images[card_index], show=should_show)
+
+            dpg.configure_item(
+                self.player_cards_listboxes[card_index], show=should_show)
+            dpg.configure_item(
+                self.player_cards_images[card_index], show=should_show)
 
             if should_show:
-                dpg.set_value(self.player_cards_listboxes[card_index], self.player_cards[card_index])
-                dpg.configure_item(self.player_cards_images[card_index], texture_tag=self.card_textures.get(self.player_cards[card_index], ""))
-                dpg.configure_item(self.dealer_card_image, texture_tag=self.card_textures.get(self.dealer_card, ""))
+                dpg.set_value(
+                    self.player_cards_listboxes[card_index], self.player_cards[card_index])
+                dpg.configure_item(self.player_cards_images[card_index], texture_tag=self.card_textures.get(
+                    self.player_cards[card_index], ""))
+                dpg.configure_item(self.dealer_card_image, texture_tag=self.card_textures.get(
+                    self.dealer_card, ""))
 
     def _reset_game(self):
         self.dealer_card = self.DEFAULT_CARD
@@ -65,13 +72,14 @@ class BlackjackInterface:
                 user_data=user_data,
                 show=show_condition
             )
-            
+
             texture_tag = self.card_textures.get(self.DEFAULT_CARD, "")
             scale = 0.8
-            card_image = dpg.add_image(texture_tag, width=int(dpg.get_item_width(texture_tag) * scale), height=int(dpg.get_item_height(texture_tag) * scale), show=show_condition)
+            card_image = dpg.add_image(texture_tag, width=int(dpg.get_item_width(
+                texture_tag) * scale), height=int(dpg.get_item_height(texture_tag) * scale), show=show_condition)
 
         return card_listbox, card_image
-    
+
     def _change_rule(self, _, app_data, user_data):
         self.blackjack_helper.set_rule(user_data, app_data)
         self._update_help_text()
@@ -84,9 +92,9 @@ class BlackjackInterface:
         with dpg.window() as blackjack_window:
             dpg.add_button(label="Settings", callback=self._show_settings)
 
-            self.dealer_card_listbox, self.dealer_card_image  = self._add_card_listbox_and_image(
+            self.dealer_card_listbox, self.dealer_card_image = self._add_card_listbox_and_image(
                 self._update_dealer_card)
-            
+
             total_rows = math.ceil(self.max_player_cards / self.cards_per_row)
             for row in range(total_rows):
                 with dpg.group(horizontal=True):
@@ -95,7 +103,8 @@ class BlackjackInterface:
                         if card_index < self.max_player_cards:
                             show_condition = card_index < min(
                                 len(self.player_cards), self.max_player_cards)
-                            listbox, image = self._add_card_listbox_and_image(self._update_player_cards, card_index, show_condition)
+                            listbox, image = self._add_card_listbox_and_image(
+                                self._update_player_cards, card_index, show_condition)
                             self.player_cards_listboxes.append(listbox)
                             self.player_cards_images.append(image)
 
@@ -111,20 +120,22 @@ class BlackjackInterface:
 
     def _setup_settings_window(self):
         with dpg.window() as settings_window:
-            dpg.add_checkbox(label="Double allowed", 
-                             default_value=self.blackjack_helper.get_rule(BlackjackRules.DOUBLE_ALLOWED), 
+            dpg.add_checkbox(label="Double allowed",
+                             default_value=self.blackjack_helper.get_rule(
+                                 BlackjackRules.DOUBLE_ALLOWED),
                              callback=self._change_rule, user_data=BlackjackRules.DOUBLE_ALLOWED)
-            
-            dpg.add_checkbox(label="Double after split allowed", 
-                             default_value=self.blackjack_helper.get_rule(BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED), 
+
+            dpg.add_checkbox(label="Double after split allowed",
+                             default_value=self.blackjack_helper.get_rule(
+                                 BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED),
                              callback=self._change_rule, user_data=BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED)
-            
-            dpg.add_checkbox(label="Surrender allowed", 
-                             default_value=self.blackjack_helper.get_rule(BlackjackRules.SURRENDER_ALLOWED), 
+
+            dpg.add_checkbox(label="Surrender allowed",
+                             default_value=self.blackjack_helper.get_rule(
+                                 BlackjackRules.SURRENDER_ALLOWED),
                              callback=self._change_rule, user_data=BlackjackRules.SURRENDER_ALLOWED)
-        
+
         self.settings_window = settings_window
-        
 
     def setup_ui(self):
         self.card_textures = {}
@@ -134,7 +145,8 @@ class BlackjackInterface:
             width, height, _, data = dpg.load_image(image_path)
 
             with dpg.texture_registry():
-                texture_tag = dpg.add_static_texture(width=width, height=height, default_value=data)
+                texture_tag = dpg.add_static_texture(
+                    width=width, height=height, default_value=data)
                 self.card_textures[card] = texture_tag
 
         dpg.create_viewport(title='Blackjack Helper', width=800, height=520)

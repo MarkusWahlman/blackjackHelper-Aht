@@ -9,7 +9,7 @@
 | 20.3      | 2    | GUI development                                                  |
 | 31.3      | 2    | Added rules to GUI                                               |
 | 1.4       | 2    | Fix rules on GUI, add card images and add tests to fill coverage |
-|           |      |                                                                  |
+| 5.4       | 1    | Fix linting and tests                                            |
 |           |      |                                                                  |
 |           |      |                                                                  |
 |           |      |                                                                  |
