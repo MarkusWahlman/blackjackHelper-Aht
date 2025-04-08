@@ -4,7 +4,7 @@
 
 Blackjack Helper is a tool designed to assist players make optimal decisions based on predefined blackjack strategy charts. Players can configure game settings, such as whether doubling after a split is allowed.
 
-## Core Functionality
+## Core Functionality - DONE
 
 ### Before Starting the Game
 
@@ -30,7 +30,8 @@ A simple graphical interface with two separate windows:
 - Game Window:
   - Allows users to input their hand and the dealer's upcard and view recommended moves.
 - Settings Window:
-  - Enables users to adjust game settings.
+  - Enables users to adjust game settings. “tehty”
+  - Users can use their own charts
 
 ## Future Enhancements
 
@@ -42,5 +43,4 @@ Possible improvements for future versions include:
   - Overall win rate
 - Saving table settings locally
 - Online storage for tracking blackjack game history
-- Allowing users to upload and use their own charts
 - Card detection for online blackjack using YOLO
