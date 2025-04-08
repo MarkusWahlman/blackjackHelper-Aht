@@ -64,18 +64,19 @@ class BlackjackHelper:
     @staticmethod
     def _load_charts_from_directory(directory: str):
         files = [f for f in os.listdir(directory) if f.endswith(".json")]
-        
+
         charts = {}
         for file in files:
             file_path = os.path.join(directory, file)
-            with open(file_path, "r") as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 chart_data = json.load(f)
                 chart_name = file.split(".")[0]
                 charts[chart_name] = Chart(chart_data)
 
         required_charts = ["normal", "soft", "split"]
         if not all(chart in charts for chart in required_charts):
-            raise ValueError(f"Missing one or more required charts: {required_charts}")
+            raise ValueError(
+                f"Missing one or more required charts: {required_charts}")
 
         return charts
 
@@ -88,7 +89,7 @@ class BlackjackHelper:
             soft_chart=charts["soft"],
             split_chart=charts["split"]
         )
-        
+
     @staticmethod
     def verify_blackjack_chart(chart: Chart):
         chart_data = chart.get_chart_data()
@@ -136,7 +137,7 @@ class BlackjackHelper:
             BlackjackActions.SPLIT_DOUBLE: (BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED,
                                             BlackjackActions.SPLIT, BlackjackActions.DOUBLE),
             BlackjackActions.SPLIT_STAND: (BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED,
-                BlackjackActions.SPLIT, BlackjackActions.STAND),
+                                           BlackjackActions.SPLIT, BlackjackActions.STAND),
             BlackjackActions.SPLIT_HIT: (BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED,
                                          BlackjackActions.SPLIT, BlackjackActions.HIT),
             BlackjackActions.SURRENDER_HIT: (BlackjackRules.SURRENDER_ALLOWED,

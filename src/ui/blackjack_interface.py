@@ -124,12 +124,12 @@ class BlackjackInterface:
         self.blackjack_helper.change_charts_directory(file_path)
         self._update_help_text()
 
-
     def _setup_settings_window(self):
         file_dialog = dpg.add_file_dialog(
-            directory_selector=True, show=False, callback=self._update_chart_path, width=700 ,height=400, default_path="data/charts")
+            directory_selector=True, show=False, callback=self._update_chart_path, width=700, height=400, default_path="data/charts")
         with dpg.window() as settings_window:
-            dpg.add_button(label="Select chart directory", callback=lambda: dpg.show_item(file_dialog))
+            dpg.add_button(label="Select chart directory",
+                           callback=lambda: dpg.show_item(file_dialog))
             dpg.add_checkbox(label="Double allowed",
                              default_value=self.blackjack_helper.get_rule(
                                  BlackjackRules.DOUBLE_ALLOWED),
@@ -172,7 +172,8 @@ class BlackjackInterface:
         self.player_cards_listboxes = []
         self.player_cards_images = []
 
-        self.blackjack_helper = BlackjackHelper.charts_from_directory("data/charts/single_deck/stand_on_soft_17")
+        self.blackjack_helper = BlackjackHelper.charts_from_directory(
+            "data/charts/single_deck/stand_on_soft_17")
 
         dpg.create_context()
         dpg.setup_dearpygui()
