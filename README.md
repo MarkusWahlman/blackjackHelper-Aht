@@ -9,6 +9,10 @@ Blackjack Helper is a tool designed to assist players make optimal decisions bas
 - [Changelog](documentation/changelog.md)
 - [Architecture](documentation/architecture.md)
 
+## Python Version
+
+This project requires **Python 3.11 or later**.
+
 ## Installation
 
 1. **Install dependencies:**
