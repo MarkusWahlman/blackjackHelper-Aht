@@ -30,7 +30,7 @@ A simple graphical interface with two separate windows:
 - Game Window:
   - Allows users to input their hand and the dealer's upcard and view recommended moves.
 - Settings Window:
-  - Enables users to adjust game settings. “tehty”
+  - Enables users to adjust game settings.
   - Users can use their own charts
 
 ## Future Enhancements
