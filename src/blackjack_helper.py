@@ -1,4 +1,6 @@
 from enum import StrEnum
+import json
+import os
 from chart import Chart
 
 
@@ -11,6 +13,7 @@ class BlackjackActions(StrEnum):
     SPLIT = 'P'
     SPLIT_HIT = 'Ph'
     SPLIT_DOUBLE = 'Pd'
+    SPLIT_STAND = 'Ps'
     SURRENDER = 'R'
     SURRENDER_HIT = 'Rh'
     SURRENDER_STAND = 'Rs'
@@ -59,6 +62,34 @@ class BlackjackHelper:
         }
 
     @staticmethod
+    def _load_charts_from_directory(directory: str):
+        files = [f for f in os.listdir(directory) if f.endswith(".json")]
+        
+        charts = {}
+        for file in files:
+            file_path = os.path.join(directory, file)
+            with open(file_path, "r") as f:
+                chart_data = json.load(f)
+                chart_name = file.split(".")[0]
+                charts[chart_name] = Chart(chart_data)
+
+        required_charts = ["normal", "soft", "split"]
+        if not all(chart in charts for chart in required_charts):
+            raise ValueError(f"Missing one or more required charts: {required_charts}")
+
+        return charts
+
+    @staticmethod
+    def charts_from_directory(directory: str):
+        charts = BlackjackHelper._load_charts_from_directory(directory)
+
+        return BlackjackHelper(
+            normal_chart=charts["normal"],
+            soft_chart=charts["soft"],
+            split_chart=charts["split"]
+        )
+        
+    @staticmethod
     def verify_blackjack_chart(chart: Chart):
         chart_data = chart.get_chart_data()
 
@@ -76,6 +107,13 @@ class BlackjackHelper:
                         f"Invalid value: {value} in {outer_key} -> {inner_key}")
 
         return True
+
+    def change_charts_directory(self, directory: str):
+        charts = BlackjackHelper._load_charts_from_directory(directory)
+
+        self.normal_chart = charts["normal"]
+        self.soft_chart = charts["soft"]
+        self.split_chart = charts["split"]
 
     def set_rule(self, rule_name: BlackjackRules, value: bool):
         if rule_name not in BlackjackRules:
@@ -97,6 +135,8 @@ class BlackjackHelper:
                                             BlackjackActions.DOUBLE, BlackjackActions.STAND),
             BlackjackActions.SPLIT_DOUBLE: (BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED,
                                             BlackjackActions.SPLIT, BlackjackActions.DOUBLE),
+            BlackjackActions.SPLIT_STAND: (BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED,
+                BlackjackActions.SPLIT, BlackjackActions.STAND),
             BlackjackActions.SPLIT_HIT: (BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED,
                                          BlackjackActions.SPLIT, BlackjackActions.HIT),
             BlackjackActions.SURRENDER_HIT: (BlackjackRules.SURRENDER_ALLOWED,

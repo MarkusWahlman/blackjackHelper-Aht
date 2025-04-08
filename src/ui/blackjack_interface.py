@@ -29,6 +29,7 @@ class BlackjackInterface:
         if should_add:
             self.player_cards.append(self.DEFAULT_CARD)
             self._update_card_listboxes()
+            self._update_help_text()
 
     def _update_help_text(self):
         new_text = self.blackjack_helper.ask_help(
@@ -118,8 +119,17 @@ class BlackjackInterface:
         dpg.set_primary_window(blackjack_window, True)
         self.blackjack_window = blackjack_window
 
+    def _update_chart_path(self, _, app_data):
+        file_path = app_data['file_path_name']
+        self.blackjack_helper.change_charts_directory(file_path)
+        self._update_help_text()
+
+
     def _setup_settings_window(self):
+        file_dialog = dpg.add_file_dialog(
+            directory_selector=True, show=False, callback=self._update_chart_path, width=700 ,height=400, default_path="data/charts")
         with dpg.window() as settings_window:
+            dpg.add_button(label="Select chart directory", callback=lambda: dpg.show_item(file_dialog))
             dpg.add_checkbox(label="Double allowed",
                              default_value=self.blackjack_helper.get_rule(
                                  BlackjackRules.DOUBLE_ALLOWED),
@@ -162,14 +172,7 @@ class BlackjackInterface:
         self.player_cards_listboxes = []
         self.player_cards_images = []
 
-        files = ["data/charts/single_deck/stand_on_17/normal.json",
-                 "data/charts/single_deck/stand_on_17/soft.json", "data/charts/single_deck/stand_on_17/split.json"]
-        normal_chart, soft_chart, split_chart = [
-            Chart(json.load(open(file, "r"))) for file in files]
-
-        self.blackjack_helper = BlackjackHelper(
-            normal_chart, soft_chart, split_chart
-        )
+        self.blackjack_helper = BlackjackHelper.charts_from_directory("data/charts/single_deck/stand_on_soft_17")
 
         dpg.create_context()
         dpg.setup_dearpygui()
