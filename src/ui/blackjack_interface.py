@@ -137,7 +137,7 @@ class BlackjackInterface:
 
         self.settings_window = settings_window
 
-    def setup_ui(self):
+    def _setup_ui(self):
         self.card_textures = {}
 
         for card in BLACKJACK_CARDS:
@@ -162,8 +162,8 @@ class BlackjackInterface:
         self.player_cards_listboxes = []
         self.player_cards_images = []
 
-        files = ["data/charts/single_deck_so17_normal.json",
-                 "data/charts/single_deck_so17_soft.json", "data/charts/single_deck_so17_split.json"]
+        files = ["data/charts/single_deck/stand_on_17/normal.json",
+                 "data/charts/single_deck/stand_on_17/soft.json", "data/charts/single_deck/stand_on_17/split.json"]
         normal_chart, soft_chart, split_chart = [
             Chart(json.load(open(file, "r"))) for file in files]
 
@@ -174,7 +174,7 @@ class BlackjackInterface:
         dpg.create_context()
         dpg.setup_dearpygui()
 
-        self.setup_ui()
+        self._setup_ui()
 
     def start(self):
         dpg.show_viewport()

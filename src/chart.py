@@ -9,7 +9,7 @@ class Chart:
     def get_chart_data(self):
         return self.chart_data
 
-    def __call__(self, dealer_card, player_hand: list[str]):
+    def __call__(self, row, col: list[str]):
         return self.chart_data.get(
-            dealer_card, {}).get(
-            player_hand, self.on_not_found)
+            row, {}).get(
+            col, self.on_not_found)

@@ -53,9 +53,9 @@ class BlackjackHelper:
         self.split_chart = split_chart
 
         self.rules = rules or {
-            "double_allowed": True,
-            "double_after_split_allowed": False,
-            "surrender_allowed": False,
+            BlackjackRules.DOUBLE_ALLOWED: True,
+            BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED: False,
+            BlackjackRules.SURRENDER_ALLOWED: False,
         }
 
     @staticmethod
