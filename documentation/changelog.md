@@ -8,8 +8,8 @@ Week 3:
 31.03.2025: Added changeable rules to the GUI  
 01.04.2025: Added card images to the GUI
 
-Week 4:
+Week 4:  
 08.04.2025: Added ability for users to choose which blackjack charts to use
 
-Week 5:
+Week 5:  
 15.04.2025: Added new rule for splitting
