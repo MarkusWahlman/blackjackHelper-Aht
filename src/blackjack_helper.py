@@ -37,6 +37,7 @@ BLACKJACK_CARDS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
 class BlackjackRules(StrEnum):
     DOUBLE_ALLOWED = 'double_allowed'
+    SPLIT_ALLOWED = 'split_allowed'
     DOUBLE_AFTER_SPLIT_ALLOWED = 'double_after_split_allowed'
     SURRENDER_ALLOWED = 'surrender_allowed'
 
@@ -57,6 +58,7 @@ class BlackjackHelper:
 
         self.rules = rules or {
             BlackjackRules.DOUBLE_ALLOWED: True,
+            BlackjackRules.SPLIT_ALLOWED: True,
             BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED: False,
             BlackjackRules.SURRENDER_ALLOWED: False,
         }
@@ -77,6 +79,9 @@ class BlackjackHelper:
         if not all(chart in charts for chart in required_charts):
             raise ValueError(
                 f"Missing one or more required charts: {required_charts}")
+        
+        for chart_name in required_charts:
+            BlackjackHelper.verify_blackjack_chart(charts[chart_name])
 
         return charts
 
@@ -159,7 +164,8 @@ class BlackjackHelper:
         total_value = 0
 
         if self._is_pair(player_cards):
-            return self.split_chart, player_cards[0]
+            if(self.get_rule(BlackjackRules.SPLIT_ALLOWED)):
+                return self.split_chart, player_cards[0]
 
         found_ace = False
         for card in player_cards:

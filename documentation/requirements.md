@@ -10,6 +10,7 @@ Blackjack Helper is a tool designed to assist players make optimal decisions bas
 
 - The user can configure game rules, such as:
   - Whether doubling is allowed
+  - Whether splitting is allowed
   - Whether doubling after a split is allowed
   - Whether surrender is allowed
 

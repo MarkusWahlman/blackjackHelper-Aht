@@ -10,3 +10,6 @@ Week 3:
 
 Week 4:
 08.04.2025: Added ability for users to choose which blackjack charts to use
+
+Week 5:
+15.04.2025: Added new rule for splitting

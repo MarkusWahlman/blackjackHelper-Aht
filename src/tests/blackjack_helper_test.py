@@ -123,8 +123,19 @@ class TestBlackjackHelperRules(unittest.TestCase):
             "3": {"5": BlackjackActions.SPLIT_DOUBLE, "6": BlackjackActions.SURRENDER_HIT, "7": BlackjackActions.SURRENDER_STAND, },
         })
 
+        split_chart = Chart({
+            "2": {"5": BlackjackActions.SPLIT_DOUBLE, "6": BlackjackActions.SURRENDER_HIT, "7": BlackjackActions.SURRENDER_STAND, },
+            "3": {"5": BlackjackActions.DOUBLE_HIT, "6": BlackjackActions.DOUBLE_STAND, "7": BlackjackActions.SPLIT_DOUBLE, },
+        })
+
         self.blackjack_helper = BlackjackHelper(
-            normal_chart, normal_chart, normal_chart
+            normal_chart, normal_chart, normal_chart,
+            rules={
+            BlackjackRules.DOUBLE_ALLOWED: True,
+            BlackjackRules.SPLIT_ALLOWED: True,
+            BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED: False,
+            BlackjackRules.SURRENDER_ALLOWED: False,
+        }
         )
 
     def test_returns_none_for_invalid_dealer_hand(self):
@@ -191,3 +202,15 @@ class TestBlackjackHelperRules(unittest.TestCase):
         blackjack_action = self.blackjack_helper._get_correct_action("3", [
                                                                      "3", "4"])
         self.assertEqual(blackjack_action, BlackjackActions.STAND)
+
+    def test_split_allowed_rule_true_has_effect(self):
+        self.blackjack_helper.set_rule(BlackjackRules.SPLIT_ALLOWED, True)
+        blackjack_action = self.blackjack_helper._get_correct_action("3", [
+                                                                     "3", "3"])
+        self.assertEqual(blackjack_action, BlackjackActions.STAND)
+
+    def test_split_allowed_rule_false_has_effect(self):
+        self.blackjack_helper.set_rule(BlackjackRules.SPLIT_ALLOWED, False)
+        blackjack_action = self.blackjack_helper._get_correct_action("3", [
+                                                                     "3", "3"])
+        self.assertEqual(blackjack_action, BlackjackActions.HIT)

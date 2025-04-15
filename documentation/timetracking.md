@@ -11,6 +11,6 @@
 | 1.4       | 2    | Fix rules on GUI, add card images and add tests to fill coverage                     |
 | 5.4       | 1    | Fix linting and tests                                                                |
 | 8.4       | 4    | Add UML class diagram and ability for users to choose blackjack charts + refactoring |
+| 15.4      | 2    | Add new rule for splitting, update documentation                                     |
 |           |      |                                                                                      |
-|           |      |                                                                                      |
-| Total     | 26   |                                                                                      |
+| Total     | 28   |                                                                                      |
