@@ -177,7 +177,7 @@ class BlackjackInterface:
         self.player_cards_listboxes = []
         self.player_cards_images = []
 
-        self.blackjack_helper = BlackjackHelper.charts_from_directory(
+        self.blackjack_helper = BlackjackHelper.from_charts_directory(
             "data/charts/single_deck/stand_on_soft_17")
 
         dpg.create_context()

@@ -86,7 +86,7 @@ class BlackjackHelper:
         return charts
 
     @staticmethod
-    def charts_from_directory(directory: str):
+    def from_charts_directory(directory: str):
         charts = BlackjackHelper._load_charts_from_directory(directory)
 
         return BlackjackHelper(
@@ -117,9 +117,17 @@ class BlackjackHelper:
     def change_charts_directory(self, directory: str):
         charts = BlackjackHelper._load_charts_from_directory(directory)
 
-        self.normal_chart = charts["normal"]
-        self.soft_chart = charts["soft"]
-        self.split_chart = charts["split"]
+        normal_chart = charts["normal"]
+        soft_chart = charts["soft"]
+        split_chart = charts["split"]
+
+        normal_chart.set_on_not_found(BlackjackActions.STAND)
+        soft_chart.set_on_not_found(BlackjackActions.STAND)
+        split_chart.set_on_not_found(BlackjackActions.STAND)
+
+        self.normal_chart = normal_chart
+        self.soft_chart = soft_chart
+        self.split_chart = split_chart
 
     def set_rule(self, rule_name: BlackjackRules, value: bool):
         if rule_name not in BlackjackRules:
