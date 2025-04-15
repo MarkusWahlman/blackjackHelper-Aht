@@ -131,11 +131,11 @@ class TestBlackjackHelperRules(unittest.TestCase):
         self.blackjack_helper = BlackjackHelper(
             normal_chart, normal_chart, normal_chart,
             rules={
-            BlackjackRules.DOUBLE_ALLOWED: True,
-            BlackjackRules.SPLIT_ALLOWED: True,
-            BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED: False,
-            BlackjackRules.SURRENDER_ALLOWED: False,
-        }
+                BlackjackRules.DOUBLE_ALLOWED: True,
+                BlackjackRules.SPLIT_ALLOWED: True,
+                BlackjackRules.DOUBLE_AFTER_SPLIT_ALLOWED: False,
+                BlackjackRules.SURRENDER_ALLOWED: False,
+            }
         )
 
     def test_returns_none_for_invalid_dealer_hand(self):

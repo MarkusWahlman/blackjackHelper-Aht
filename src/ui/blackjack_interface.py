@@ -134,7 +134,7 @@ class BlackjackInterface:
                              default_value=self.blackjack_helper.get_rule(
                                  BlackjackRules.DOUBLE_ALLOWED),
                              callback=self._change_rule, user_data=BlackjackRules.DOUBLE_ALLOWED)
-            
+
             dpg.add_checkbox(label="Split allowed",
                              default_value=self.blackjack_helper.get_rule(
                                  BlackjackRules.SPLIT_ALLOWED),

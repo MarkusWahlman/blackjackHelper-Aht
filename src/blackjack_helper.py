@@ -79,7 +79,7 @@ class BlackjackHelper:
         if not all(chart in charts for chart in required_charts):
             raise ValueError(
                 f"Missing one or more required charts: {required_charts}")
-        
+
         for chart_name in required_charts:
             BlackjackHelper.verify_blackjack_chart(charts[chart_name])
 
@@ -164,7 +164,7 @@ class BlackjackHelper:
         total_value = 0
 
         if self._is_pair(player_cards):
-            if(self.get_rule(BlackjackRules.SPLIT_ALLOWED)):
+            if self.get_rule(BlackjackRules.SPLIT_ALLOWED):
                 return self.split_chart, player_cards[0]
 
         found_ace = False
