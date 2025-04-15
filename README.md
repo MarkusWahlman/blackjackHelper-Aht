@@ -53,4 +53,4 @@ This project requires **Python 3.11 or later**.
 
 ## Releases
 
-- [Initial Release of Viikko5](https://github.com/MarkusWahlman/blackjackHelper-Aht/releases/tag/viikko5)
+- [Initial Release of Week 5](https://github.com/MarkusWahlman/blackjackHelper-Aht/releases/tag/viikko5)
