@@ -50,3 +50,7 @@ This project requires **Python 3.11 or later**.
   ```sh
   poetry run invoke lint
   ```
+
+## Releases
+
+- [Initial Release of Viikko5](https://github.com/MarkusWahlman/blackjackHelper-Aht/releases/tag/viikko5)
