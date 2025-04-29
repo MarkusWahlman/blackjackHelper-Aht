@@ -14,7 +14,8 @@ class BlackjackInterface:
             dpg.add_text("An error occurred:")
             dpg.add_text(str(message))
             dpg.add_spacing(count=2)
-            dpg.add_button(label="Close", width=75, callback=lambda: dpg.delete_item(error_popup))
+            dpg.add_button(label="Close", width=75,
+                           callback=lambda: dpg.delete_item(error_popup))
 
     def _update_dealer_card(self, _, app_data):
         self.dealer_card = app_data
