@@ -12,5 +12,5 @@
 | 5.4       | 1    | Fix linting and tests                                                                |
 | 8.4       | 4    | Add UML class diagram and ability for users to choose blackjack charts + refactoring |
 | 15.4      | 2    | Add new rule for splitting, update documentation and add sequence diagram            |
-|           |      |                                                                                      |
-| Total     | 28   |                                                                                      |
+| 29.4      | 4    | Add error message for invalid directory, update documentation and add docstrings     |
+| Total     | 32   |                                                                                      |

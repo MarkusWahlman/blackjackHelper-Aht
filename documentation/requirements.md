@@ -33,6 +33,7 @@ A simple graphical interface with two separate windows:
 - Settings Window:
   - Enables users to adjust game settings.
   - Users can use their own charts
+  - Users get notified if the charts are invalid
 
 ## Future Enhancements
 
