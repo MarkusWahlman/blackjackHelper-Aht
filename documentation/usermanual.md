@@ -100,3 +100,4 @@ Example (`normal.json`):
 
 - Missing combinations default to Stand ("S")
 - Soft charts must include actions for totals like 12 (applicable when splitting is disabled)
+- When reading charts online there may be no row for splitting 5s and 10s. You still need to add them to the split chart. You'll usually need to look up the correct action as a hard total from the normal chart
