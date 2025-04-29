@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
-from chart import Chart
-from blackjack_helper import BlackjackHelper, BlackjackActions, BlackjackRules
+from services.chart import Chart
+from services.blackjack_helper import BlackjackHelper, BlackjackActions, BlackjackRules
 
 
 class TestVerifyBlackjackChart(unittest.TestCase):

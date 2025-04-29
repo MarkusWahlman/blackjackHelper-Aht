@@ -1,10 +1,11 @@
 from enum import StrEnum
 import json
 import os
-from chart import Chart
+from services.chart import Chart
 
 
 class BlackjackActions(StrEnum):
+    """Enum for possible blackjack actions."""
     HIT = 'H'
     STAND = 'S'
     DOUBLE = 'D'
@@ -29,6 +30,7 @@ BLACKJACK_ACTION_NAMES = {
 
 
 def get_blackjack_action_name(action: BlackjackActions) -> str:
+    """Get readable name for a blackjack action."""
     return BLACKJACK_ACTION_NAMES.get(action, "Unknown")
 
 
@@ -36,6 +38,7 @@ BLACKJACK_CARDS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
 
 class BlackjackRules(StrEnum):
+    """Enum for blackjack rules."""
     DOUBLE_ALLOWED = 'double_allowed'
     SPLIT_ALLOWED = 'split_allowed'
     DOUBLE_AFTER_SPLIT_ALLOWED = 'double_after_split_allowed'
@@ -43,7 +46,9 @@ class BlackjackRules(StrEnum):
 
 
 class BlackjackHelper:
+    """Provides blackjack strategy advice using charts and rules."""
     def __init__(self, normal_chart: Chart, soft_chart: Chart, split_chart: Chart, rules=None):
+        """Initialize charts and possible rules."""
         normal_chart.set_on_not_found(BlackjackActions.STAND)
         soft_chart.set_on_not_found(BlackjackActions.STAND)
         split_chart.set_on_not_found(BlackjackActions.STAND)
@@ -65,6 +70,7 @@ class BlackjackHelper:
 
     @staticmethod
     def _load_charts_from_directory(directory: str):
+        """Load chart data from a directory."""
         files = [f for f in os.listdir(directory) if f.endswith(".json")]
 
         charts = {}
@@ -87,6 +93,7 @@ class BlackjackHelper:
 
     @staticmethod
     def from_charts_directory(directory: str):
+        """Create BlackjackHelper from chart files in directory."""
         charts = BlackjackHelper._load_charts_from_directory(directory)
 
         return BlackjackHelper(
@@ -97,6 +104,7 @@ class BlackjackHelper:
 
     @staticmethod
     def verify_blackjack_chart(chart: Chart):
+        """Validate a chart's values."""
         chart_data = chart.get_chart_data()
 
         for outer_key, inner_dict in chart_data.items():
@@ -115,6 +123,7 @@ class BlackjackHelper:
         return True
 
     def change_charts_directory(self, directory: str):
+        """Change to new charts from a directory."""
         charts = BlackjackHelper._load_charts_from_directory(directory)
 
         normal_chart = charts["normal"]
@@ -130,18 +139,21 @@ class BlackjackHelper:
         self.split_chart = split_chart
 
     def set_rule(self, rule_name: BlackjackRules, value: bool):
+        """Set the value of a blackjack rule."""
         if rule_name not in BlackjackRules:
             raise ValueError(f"Unknown rule: {rule_name}")
 
         self.rules[rule_name] = value
 
     def get_rule(self, rule_name: BlackjackRules):
+        """Get the value of a blackjack rule."""
         if rule_name not in BlackjackRules:
             raise ValueError(f"Unknown rule: {rule_name}")
 
         return self.rules[rule_name]
 
     def _get_correct_action_from_rules(self, action: BlackjackActions):
+        """Adjust action based on current rules."""
         rules_map = {
             BlackjackActions.DOUBLE_HIT: (BlackjackRules.DOUBLE_ALLOWED,
                                           BlackjackActions.DOUBLE, BlackjackActions.HIT),
@@ -166,9 +178,11 @@ class BlackjackHelper:
         return action
 
     def _is_pair(self, player_cards: list[str]) -> bool:
+        """Check if player_cards is a pair."""
         return len(player_cards) == 2 and player_cards[0] == player_cards[1]
 
     def _determine_chart_and_value_to_search(self, player_cards):
+        """Choose correct chart and lookup value."""
         total_value = 0
 
         if self._is_pair(player_cards):
@@ -191,6 +205,7 @@ class BlackjackHelper:
         return self.normal_chart, total_value
 
     def _get_correct_action(self, dealer_card: str, player_cards: list[str]):
+        """Get best action based on given hand and dealer card."""
         if (
             dealer_card not in BLACKJACK_CARDS
             or any(card not in BLACKJACK_CARDS for card in player_cards)
@@ -207,4 +222,5 @@ class BlackjackHelper:
         return self._get_correct_action_from_rules(action)
 
     def ask_help(self, dealer_card: str, player_cards: list[str]):
+        """Return readable advice based on current hand and rules."""
         return get_blackjack_action_name(self._get_correct_action(dealer_card, player_cards))

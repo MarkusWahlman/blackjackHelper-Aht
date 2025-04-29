@@ -1,5 +1,5 @@
 import unittest
-from chart import Chart
+from services.chart import Chart
 
 
 class TestChart(unittest.TestCase):
