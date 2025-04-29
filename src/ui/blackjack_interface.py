@@ -9,6 +9,13 @@ from chart import Chart
 class BlackjackInterface:
     DEFAULT_CARD = "1"
 
+    def _show_error_message(self, message):
+        with dpg.window(label="Error", modal=True, no_title_bar=False, width=600, height=150, pos=(100, 200)) as error_popup:
+            dpg.add_text("An error occurred:")
+            dpg.add_text(str(message))
+            dpg.add_spacing(count=2)
+            dpg.add_button(label="Close", width=75, callback=lambda: dpg.delete_item(error_popup))
+
     def _update_dealer_card(self, _, app_data):
         self.dealer_card = app_data
         dpg.configure_item(self.dealer_card_image,
@@ -121,7 +128,11 @@ class BlackjackInterface:
 
     def _update_chart_path(self, _, app_data):
         file_path = app_data['file_path_name']
-        self.blackjack_helper.change_charts_directory(file_path)
+        try:
+            self.blackjack_helper.change_charts_directory(file_path)
+        except Exception as e:
+            self._show_error_message(e)
+            return
         self._update_help_text()
 
     def _setup_settings_window(self):
