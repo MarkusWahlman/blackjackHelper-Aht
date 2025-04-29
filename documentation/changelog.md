@@ -15,4 +15,4 @@ Week 5:
 15.04.2025: Added new rule for splitting
 
 Week 6:
-29.04.2025: Added error messages for invalid directories
+29.04.2025: Added error messages for invalid chart directories

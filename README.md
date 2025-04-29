@@ -8,6 +8,7 @@ Blackjack Helper is a tool designed to assist players make optimal decisions bas
 - [Time Tracking](documentation/timetracking.md)
 - [Changelog](documentation/changelog.md)
 - [Architecture](documentation/architecture.md)
+- [User manual](documentation/usermanual.md)
 
 ## Python Version
 
