@@ -4,7 +4,7 @@
 
 Testing was done in the following ways:
 
-- **Automated**: Unit tests with the `unittest` framework
+- **Automated**: Unit and integration testing with the `unittest` framework
 - **Manual**: Manual system-level testing
 
 ## Automated Testing
